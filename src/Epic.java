@@ -5,7 +5,7 @@ public class Epic extends Task {
 
     private List<Integer> subtasksIds = new ArrayList<>();
 
-    public Epic(String title, String description, Status status) {
+    public Epic(String title, String description, Enum.Status status) {
         super(title, description, status);
     }
 

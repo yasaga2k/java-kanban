@@ -1,12 +1,6 @@
 import java.util.Objects;
 
-public class Task {
-
-    public enum Status {
-        NEW,
-        IN_PROGRESS,
-        DONE
-    }
+public class Task extends Enum {
 
     private String title;
     private String description;
