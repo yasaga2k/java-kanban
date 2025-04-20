@@ -5,25 +5,25 @@ public class Main {
 
         TaskManager taskManager = new TaskManager();
 
-        Task task1 = new Task("Пример 1", "Описание 1", Task.Status.NEW);
+        Task task1 = new Task("Пример 1", "Описание 1", Enum.Status.NEW);
         taskManager.createTask(task1);
 
-        Task task2 = new Task("Пример 2", "Описание 2", Task.Status.IN_PROGRESS);
+        Task task2 = new Task("Пример 2", "Описание 2", Enum.Status.IN_PROGRESS);
         taskManager.createTask(task2);
 
-        Epic epic1 = new Epic("Пример 3", "Описание 3", Task.Status.DONE);
+        Epic epic1 = new Epic("Пример 3", "Описание 3", Enum.Status.DONE);
         taskManager.createEpic(epic1);
 
-        Subtask subtask1 = new Subtask("Саб 1", "Описание 1", Task.Status.NEW, epic1.getId());
+        Subtask subtask1 = new Subtask("Саб 1", "Описание 1", Enum.Status.NEW, epic1.getId());
         taskManager.createSubtask(subtask1);
 
-        Subtask subtask2 = new Subtask("Саб 2", "Описание 2", Task.Status.NEW, epic1.getId());
+        Subtask subtask2 = new Subtask("Саб 2", "Описание 2", Enum.Status.NEW, epic1.getId());
         taskManager.createSubtask(subtask2);
 
-        Epic epic2 = new Epic("Эпик 2", "Описание 2.2", Task.Status.NEW);
+        Epic epic2 = new Epic("Эпик 2", "Описание 2.2", Enum.Status.NEW);
         taskManager.createEpic(epic2);
 
-        Subtask subtask3 = new Subtask("Саб 3 ", "Описание 3.3", Task.Status.IN_PROGRESS, epic2.getId());
+        Subtask subtask3 = new Subtask("Саб 3 ", "Описание 3.3", Enum.Status.IN_PROGRESS, epic2.getId());
         taskManager.createSubtask(subtask3);
 
         System.out.println("Tasks: " + taskManager.getAllTasks());
