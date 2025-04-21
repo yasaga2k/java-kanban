@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-public class Task extends Enum {
+public class Task {
 
     private String title;
     private String description;
