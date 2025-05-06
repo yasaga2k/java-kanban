@@ -62,7 +62,7 @@ class InMemoryTaskManagerTest {
         Subtask subtask = new Subtask("Саба", "Опис", Status.NEW,epic.getId());
         manager.addSubtask(subtask);
 
-        Subtask result = manager.getSubtaskIds(subtask.getId());
+        Subtask result = manager.getSubtaskById(subtask.getId());
         assertNotNull(result);
         assertEquals(epic.getId(), result.getEpicId());
     }
@@ -123,7 +123,7 @@ class InMemoryTaskManagerTest {
 
         manager.deleteEpicById(epic.getId());
 
-        Subtask deletedSubtask = manager.getSubtaskIds(subtask.getId());
+        Subtask deletedSubtask = manager.getSubtaskById(subtask.getId());
         assertNull(deletedSubtask);
     }
 
@@ -146,7 +146,7 @@ class InMemoryTaskManagerTest {
         manager.addEpic(epic);
 
         Subtask sub1 = new Subtask("Саб 1", "Опис 1", Status.NEW, epic.getId());
-        Subtask sub2 = new Subtask("Саб 2", "Опис 2", Status.NEW,epic.getId());
+        Subtask sub2 = new Subtask("Саб 2", "Опис 2", Status.NEW, epic.getId());
         manager.addSubtask(sub1);
         manager.addSubtask(sub2);
 

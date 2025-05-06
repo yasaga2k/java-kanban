@@ -41,7 +41,7 @@ interface TaskManager {
 
     void deleteAllSubtask();
 
-    Subtask getSubtaskIds(int id);
+    Subtask getSubtaskById(int id);
 
     void createSubtask(Subtask subtask);
 

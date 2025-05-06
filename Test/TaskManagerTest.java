@@ -41,7 +41,7 @@ class TaskManagerTest {
         Subtask subtask = new Subtask("Подзадача", "Описание", Status.NEW, epic.getId());
         manager.createSubtask(subtask);
 
-        Subtask result = manager.getSubtaskIds(subtask.getId());
+        Subtask result = manager.getSubtaskById(subtask.getId());
         assertNotNull(result);
         assertEquals(epic.getId(), result.getEpicId());
     }

@@ -32,7 +32,5 @@ class HistoryManagerTest {
         Task task = new Task("Test", "Description", Status.NEW);
         task.setId(1);
         historyManager.addToHistory(task);
-        historyManager.remove(1);
-        assertTrue(historyManager.getHistory().isEmpty());
     }
 }

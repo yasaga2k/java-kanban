@@ -47,7 +47,7 @@ public class Main {
 
         mainManager.getTaskById(task1.getId());
         mainManager.getEpicsById(epic1.getId());
-        mainManager.getSubtaskIds(subtask1.getId());
+        mainManager.getSubtaskById(subtask1.getId());
 
         System.out.println("\nИстория просмотров:");
         for (Task viewed : mainManager.getHistory()) {

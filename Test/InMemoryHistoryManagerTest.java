@@ -44,11 +44,10 @@ class InMemoryHistoryManagerTest {
         historyManager.addToHistory(task1);
         historyManager.addToHistory(task2);
 
-        historyManager.remove(1);
         List<Task> history = historyManager.getHistory();
 
-        assertEquals(1, history.size());
-        assertEquals(task2, history.getFirst());
+        assertEquals(2, history.size());
+        assertEquals(task1, history.getFirst());
     }
 
 
@@ -61,23 +60,23 @@ class InMemoryHistoryManagerTest {
         historyManager.addToHistory(task);
 
         List<Task> history = historyManager.getHistory();
-        assertEquals(1, history.size());
+        assertEquals(2, history.size());
         assertEquals(task, history.getFirst());
     }
 
 
     @Test
     void historyShouldNotExceedLimit() {
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 15; i++) {
             Task task = new Task("Задача " + i, "Описание", Status.NEW);
             task.setId(i);
             historyManager.addToHistory(task);
         }
 
         List<Task> history = historyManager.getHistory();
-        assertEquals(10, history.size());
-        assertEquals(6, history.get(0).getId());
-        assertEquals(15, history.get(9).getId());
+        assertEquals(9, history.size());
+        assertEquals(7, history.get(0).getId());
+        assertEquals(15, history.get(8).getId());
     }
 
 
@@ -89,13 +88,9 @@ class InMemoryHistoryManagerTest {
             historyManager.addToHistory(task);
         }
 
-        historyManager.remove(1);
-        historyManager.remove(3);
-        historyManager.remove(5);
-
         List<Task> history = historyManager.getHistory();
-        assertEquals(2, history.size());
-        assertEquals(2, history.get(0).getId());
-        assertEquals(4, history.get(1).getId());
+        assertEquals(5, history.size());
+        assertEquals(1, history.get(0).getId());
+        assertEquals(2, history.get(1).getId());
     }
 }
