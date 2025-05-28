@@ -6,9 +6,9 @@ import java.util.Map;
 public class InMemoryTaskManager implements TaskManager { // Реализуем интерфейс TaskManager
     private int numberId = 0;
     private HistoryManager historyManager = new InMemoryHistoryManager();
-    private Map<Integer, Task> tasks = new HashMap<>();
-    private Map<Integer, Epic> epics = new HashMap<>();
-    private Map<Integer, Subtask> subtasks = new HashMap<>();
+    private final Map<Integer, Task> tasks = new HashMap<>();
+    private final Map<Integer, Epic> epics = new HashMap<>();
+    private final Map<Integer, Subtask> subtasks = new HashMap<>();
 
     private int newId() {
         return ++numberId;
@@ -30,8 +30,6 @@ public class InMemoryTaskManager implements TaskManager { // Реализуем 
     @Override
     public void deleteAllTasks() {
         tasks.clear();
-
-
     }
 
     @Override
@@ -115,7 +113,7 @@ public class InMemoryTaskManager implements TaskManager { // Реализуем 
     }
 
 
-        // МЕТОДЫ САБТАСКА
+    // МЕТОДЫ САБТАСКА
     @Override
     public void addSubtask(Subtask subtask) {
         subtask.setId(newId());
@@ -150,6 +148,8 @@ public class InMemoryTaskManager implements TaskManager { // Реализуем 
         }
         return subtask;
     }
+
+
     @Override
     public void createSubtask(Subtask subtask) {
         subtask.setId(newId());
