@@ -22,7 +22,7 @@ public class Epic extends Task {
     }
 
     public void clearSubtasks() {
-        subtasksIds.clear();
+        this.subtasksIds = subtasksIds;
     }
 
     @Override
