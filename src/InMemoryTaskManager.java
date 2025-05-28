@@ -95,20 +95,28 @@ public class InMemoryTaskManager implements TaskManager { // Реализуем 
 
     @Override
     public void updateEpic(Epic epic) {
-        if (epics.containsKey(epic.getId())) {
-            epics.put(epic.getId(), epic);
+        Epic oldEpic = epics.get(epic.getId());
+        // Очищаем список подзадач, чтобы избежать дублирования ID
+        epic.clearSubtasks();
+        if (oldEpic != null) {
+            for (int subId : oldEpic.getSubtasksIds()) {
+                epic.addSubtasksId(subId);
+            }
         }
+        epics.put(epic.getId(), epic);
+        updateEpicStatus(epic);
     }
 
     @Override
     public void deleteEpicById(int id) {
         Epic epic = epics.remove(id);
         if (epic != null) {
-            historyManager.remove(id);
-            List<Integer> subtasksId = epic.getSubtasksIds();
-            for (int subtaskId : epic.getSubtasksIds()) {
-                subtasks.remove(subtasksId);
+            for (int subId : epic.getSubtasksIds()) {
+                subtasks.remove(subId);
+
+                historyManager.remove(subId);
             }
+            historyManager.remove(id);
         }
     }
 
