@@ -1,17 +1,14 @@
 import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.*;
 
 import java.util.List;
-
-
 
 class HistoryManagerTest {
     private HistoryManager historyManager;
 
     @BeforeEach
     void setUp() {
-        historyManager = new InMemoryHistoryManager();
+        historyManager = Managers.getDefaultHistory();
     }
 
     @Test
@@ -20,7 +17,7 @@ class HistoryManagerTest {
     }
 
     @Test
-    void shouldCreateTask() {
+    void shouldAddTaskToHistory() {
         Task task = new Task("Test", "Description", Status.NEW);
         task.setId(1);
         historyManager.addToHistory(task);
@@ -28,9 +25,11 @@ class HistoryManagerTest {
     }
 
     @Test
-    void shouldRemoveTaskById() {
+    void shouldRemoveTaskFromHistory() {
         Task task = new Task("Test", "Description", Status.NEW);
         task.setId(1);
         historyManager.addToHistory(task);
+        historyManager.remove(1);
+        assertTrue(historyManager.getHistory().isEmpty());
     }
 }
