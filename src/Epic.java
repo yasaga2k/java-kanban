@@ -21,8 +21,8 @@ public class Epic extends Task {
         this.subtasksIds.remove(subtaskId);
     }
 
-    public void clearSubtasks() {
-        this.subtasksIds = subtasksIds;
+    public void setSubtasksIds() {
+        this.subtasksIds = new ArrayList<>(subtasksIds);
     }
 
     @Override

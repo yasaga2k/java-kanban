@@ -97,7 +97,7 @@ public class InMemoryTaskManager implements TaskManager { // Реализуем 
     public void updateEpic(Epic epic) {
         Epic oldEpic = epics.get(epic.getId());
         // Очищаем список подзадач, чтобы избежать дублирования ID
-        epic.clearSubtasks();
+        epic.setSubtasksIds();
         if (oldEpic != null) {
             for (int subId : oldEpic.getSubtasksIds()) {
                 epic.addSubtasksId(subId);
