@@ -35,18 +35,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         return history;
     }
 
-    private static class Node {
-        Task task;
-        Node prev;
-        Node next;
-
-        Node(Node prev, Task task, Node next) {
-            this.task = task;
-            this.prev = prev;
-            this.next = next;
-        }
-    }
-
     private void linkLast(Task task) {
         final Node newNode = new Node(last, task, null);
         if (last == null) {
@@ -69,6 +57,18 @@ public class InMemoryHistoryManager implements HistoryManager {
             node.next.prev = node.prev;
         } else {
             last = node.prev;
+        }
+    }
+
+    private static class Node {
+        Task task;
+        Node prev;
+        Node next;
+
+        Node(Node prev, Task task, Node next) {
+            this.task = task;
+            this.prev = prev;
+            this.next = next;
         }
     }
 }
