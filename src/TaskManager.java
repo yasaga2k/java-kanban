@@ -1,6 +1,4 @@
-import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 
 interface TaskManager {
 
@@ -53,5 +51,4 @@ interface TaskManager {
 
     // ИСТОРИЯ
     List<Task> getHistory();
-
 }

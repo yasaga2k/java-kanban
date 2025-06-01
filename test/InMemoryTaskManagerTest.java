@@ -161,4 +161,72 @@ class InMemoryTaskManagerTest {
         assertTrue(subtaskIds.contains(sub1.getId()));
         assertTrue(subtaskIds.contains(sub2.getId()));
     }
+
+    @Test
+    void historyShouldNotContainDuplicates() {
+        Task task = new Task("Task", "Desc", Status.NEW);
+        manager.addTask(task);
+
+        manager.getTaskById(task.getId());
+        manager.getTaskById(task.getId());
+
+        assertEquals(1, manager.getHistory().size());
+    }
+
+    @Test
+    void deletedTaskShouldBeRemovedFromHistory() {
+        Task task = new Task("Task", "Desc", Status.NEW);
+        manager.addTask(task);
+        manager.getTaskById(task.getId());
+
+        manager.deleteTaskById(task.getId());
+        assertFalse(manager.getHistory().contains(task));
+    }
+
+    @Test
+    void deletedEpicShouldRemoveSubtasksFromHistory() {
+        Epic epic = new Epic("Epic", "Desc", Status.NEW);
+        manager.addEpic(epic);
+        Subtask subtask = new Subtask("Sub", "Desc", Status.NEW, epic.getId());
+        manager.addSubtask(subtask);
+
+        manager.getEpicsById(epic.getId());
+        manager.getSubtaskById(subtask.getId());
+
+        manager.deleteEpicById(epic.getId());
+        assertTrue(manager.getHistory().isEmpty());
+    }
+
+    @Test
+    void historyShouldNotExceedMaxSize() {
+        for (int i = 1; i <= 20; i++) {
+            Task task = new Task("Task" + i, "Desc", Status.NEW);
+            manager.addTask(task);
+            manager.getTaskById(task.getId());
+        }
+
+        assertTrue(manager.getHistory().size() <= 20);
+    }
+
+    @Test
+    void historyShouldPreserveOrderAfterRemoval() {
+        Task task1 = new Task("Task1", "Desc1", Status.NEW);
+        Task task2 = new Task("Task2", "Desc2", Status.NEW);
+        Task task3 = new Task("Task3", "Desc3", Status.NEW);
+
+        manager.addTask(task1);
+        manager.addTask(task2);
+        manager.addTask(task3);
+
+        manager.getTaskById(task1.getId());
+        manager.getTaskById(task2.getId());
+        manager.getTaskById(task3.getId());
+
+        manager.deleteTaskById(task2.getId());
+
+        List<Task> history = manager.getHistory();
+        assertEquals(2, history.size());
+        assertEquals(task1.getId(), history.get(0).getId());
+        assertEquals(task3.getId(), history.get(1).getId());
+    }
 }
