@@ -10,10 +10,10 @@ import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager { // Реализуем интерфейс TaskManager
     private int numberId = 0;
-    private HistoryManager historyManager = new InMemoryHistoryManager();
-    private final Map<Integer, Task> tasks = new HashMap<>();
-    private final Map<Integer, Epic> epics = new HashMap<>();
-    private final Map<Integer, Subtask> subtasks = new HashMap<>();
+    HistoryManager historyManager = new InMemoryHistoryManager();
+    final Map<Integer, Task> tasks = new HashMap<>();
+    final Map<Integer, Epic> epics = new HashMap<>();
+    final Map<Integer, Subtask> subtasks = new HashMap<>();
 
     private int newId() {
         return ++numberId;
@@ -104,6 +104,7 @@ public class InMemoryTaskManager implements TaskManager { // Реализуем 
     public void updateEpic(Epic epic) {
         if (epics.containsKey(epic.getId())) {
             Epic existingEpic = epics.get(epic.getId());
+            // Копируем подзадачи из существующего эпика
             epic.setSubtasksIds(existingEpic.getSubtasksIds());
             epics.put(epic.getId(), epic);
         }
@@ -123,7 +124,7 @@ public class InMemoryTaskManager implements TaskManager { // Реализуем 
     }
 
 
-        // МЕТОДЫ САБТАСКА
+    // МЕТОДЫ САБТАСКА
     @Override
     public void addSubtask(Subtask subtask) {
         subtask.setId(newId());
@@ -158,6 +159,7 @@ public class InMemoryTaskManager implements TaskManager { // Реализуем 
         }
         return subtask;
     }
+
     @Override
     public void createSubtask(Subtask subtask) {
         subtask.setId(newId());
