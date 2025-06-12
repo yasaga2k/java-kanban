@@ -1,4 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
+
+import model.Status;
+import model.Task;
 import org.junit.jupiter.api.*;
 
 import java.util.List;

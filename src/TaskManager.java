@@ -1,3 +1,7 @@
+import model.Epic;
+import model.Subtask;
+import model.Task;
+
 import java.util.List;
 
 interface TaskManager {
@@ -51,4 +55,5 @@ interface TaskManager {
 
     // ИСТОРИЯ
     List<Task> getHistory();
+
 }
