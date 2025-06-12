@@ -1,3 +1,8 @@
+import model.Epic;
+import model.Status;
+import model.Subtask;
+import model.Task;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -5,10 +10,10 @@ import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager { // Реализуем интерфейс TaskManager
     private int numberId = 0;
-    private HistoryManager historyManager = new InMemoryHistoryManager();
-    private Map<Integer, Task> tasks = new HashMap<>();
-    private Map<Integer, Epic> epics = new HashMap<>();
-    private Map<Integer, Subtask> subtasks = new HashMap<>();
+    HistoryManager historyManager = new InMemoryHistoryManager();
+    Map<Integer, Task> tasks = new HashMap<>();
+    Map<Integer, Epic> epics = new HashMap<>();
+    Map<Integer, Subtask> subtasks = new HashMap<>();
 
     private int newId() {
         return ++numberId;
@@ -98,19 +103,22 @@ public class InMemoryTaskManager implements TaskManager { // Реализуем 
     @Override
     public void updateEpic(Epic epic) {
         if (epics.containsKey(epic.getId())) {
+            Epic existingEpic = epics.get(epic.getId());
+            epic.setSubtasksIds(existingEpic.getSubtasksIds());
             epics.put(epic.getId(), epic);
         }
     }
 
     @Override
     public void deleteEpicById(int id) {
-        Epic epic = epics.remove(id);
+        Epic epic = epics.get(id);
         if (epic != null) {
-            historyManager.remove(id);
-            List<Integer> subtasksId = epic.getSubtasksIds();
             for (int subtaskId : epic.getSubtasksIds()) {
-                subtasks.remove(subtasksId);
+                subtasks.remove(subtaskId);
+                historyManager.remove(subtaskId);
             }
+            epics.remove(id);
+            historyManager.remove(id);
         }
     }
 

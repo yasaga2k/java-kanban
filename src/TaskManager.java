@@ -1,6 +1,8 @@
-import java.util.HashMap;
+import model.Epic;
+import model.Subtask;
+import model.Task;
+
 import java.util.List;
-import java.util.ArrayList;
 
 interface TaskManager {
 
