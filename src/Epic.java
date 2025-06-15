@@ -1,5 +1,3 @@
-package model;
-
 import java.util.List;
 import java.util.ArrayList;
 
@@ -15,10 +13,6 @@ public class Epic extends Task {
         return subtasksIds;
     }
 
-    public void setSubtasksIds(List<Integer> subtasksIds) {
-        this.subtasksIds = subtasksIds;
-    }
-
     public void addSubtasksId(int subtaskId) {
         subtasksIds.add(subtaskId);
     }
@@ -27,9 +21,8 @@ public class Epic extends Task {
         this.subtasksIds.remove(subtaskId);
     }
 
-    @Override
-    public TaskType getType() {
-        return TaskType.EPIC;
+    public void setSubtasksIds(List<Integer> subtasksIds) {
+        this.subtasksIds = subtasksIds;
     }
 
     @Override

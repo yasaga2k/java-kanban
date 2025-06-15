@@ -1,5 +1,3 @@
-package model;
-
 import java.util.Objects;
 
 public class Task {
@@ -39,10 +37,6 @@ public class Task {
         this.status = status;
     }
 
-    public TaskType getType() {
-        return TaskType.TASK;
-    }
-
     @Override
     public boolean equals(Object object) {
         if (object == null || getClass() != object.getClass()) return false;
@@ -64,5 +58,4 @@ public class Task {
                 ", status=" + status +
                 '}';
     }
-
 }
