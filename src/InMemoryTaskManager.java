@@ -10,10 +10,10 @@ import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager { // Реализуем интерфейс TaskManager
     private int numberId = 0;
-    HistoryManager historyManager = new InMemoryHistoryManager();
-    final Map<Integer, Task> tasks = new HashMap<>();
-    final Map<Integer, Epic> epics = new HashMap<>();
-    final Map<Integer, Subtask> subtasks = new HashMap<>();
+    protected HistoryManager historyManager = new InMemoryHistoryManager();
+    protected final Map<Integer, Task> tasks = new HashMap<>();
+    protected final Map<Integer, Epic> epics = new HashMap<>();
+    protected final Map<Integer, Subtask> subtasks = new HashMap<>();
 
     private int newId() {
         return ++numberId;
