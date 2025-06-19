@@ -37,6 +37,7 @@ class FileBackedTaskManagerTest {
         Task task = new Task("Test", "Desc", Status.NEW);
         manager.addTask(task);
         manager.getTaskById(task.getId());
+        manager.save();
 
         FileBackedTaskManager loaded = FileBackedTaskManager.loadFromFile(tempFile);
         assertEquals(1, loaded.getAllTasks().size());
