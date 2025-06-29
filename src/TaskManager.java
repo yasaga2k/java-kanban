@@ -55,4 +55,8 @@ interface TaskManager {
 
     // ИСТОРИЯ
     List<Task> getHistory();
+
+    List<Task> getPrioritizedTasks();
+
+    boolean hasTimeIntersection(Task task);
 }
