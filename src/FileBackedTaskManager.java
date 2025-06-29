@@ -3,6 +3,8 @@ import exception.ManagerSaveException;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +47,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 task.getTitle(),
                 task.getStatus().name(),
                 task.getDescription(),
+                task.getStartTime() != null ? task.getStartTime().toString() : "",
+                task.getDuration() != null ? String.valueOf(task.getDuration().toMinutes()) : "",
                 epicId
         );
     }
@@ -117,13 +121,23 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             description = "";
         }
 
+        LocalDateTime startTime = fields.length > 5 && !fields[5].isEmpty() ?
+                LocalDateTime.parse(fields[5]) : null;
+        Duration duration = fields.length > 6 && !fields[6].isEmpty() ?
+                Duration.ofMinutes(Long.parseLong(fields[6])) : null;
+
+
         switch (type) {
             case TASK:
                 Task task = new Task(name, description, status);
+                task.setStartTime(startTime);
+                task.setDuration(duration);
                 task.setId(id);
                 return task;
             case EPIC:
                 Epic epic = new Epic(name, description, status);
+                epic.setStartTime(startTime);
+                epic.setDuration(duration);
                 epic.setId(id);
                 return epic;
             case SUBTASK:
@@ -135,6 +149,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     epicId = -1;
                 }
                 Subtask subtask = new Subtask(name, description, status, epicId);
+                subtask.setStartTime(startTime);
+                subtask.setDuration(duration);
                 subtask.setId(id);
                 return subtask;
             default:

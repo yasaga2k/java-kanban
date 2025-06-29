@@ -4,6 +4,8 @@ import model.Subtask;
 import model.Task;
 import org.junit.jupiter.api.*;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -232,5 +234,83 @@ class InMemoryTaskManagerTest {
         assertEquals(2, history.size());
         assertEquals(task1.getId(), history.get(0).getId());
         assertEquals(task3.getId(), history.get(1).getId());
+    }
+
+    @Test
+    void shouldCalculateEpicTimeBasedOnItsSubtasks() {
+        Epic epic = new Epic("Эпик", "Тестовое время", Status.NEW);
+        manager.createEpic(epic);  // используем create
+
+        Subtask s1 = new Subtask("Подзадача 1", "Первая", Status.NEW, epic.getId());
+        s1.setStartTime(LocalDateTime.of(2025, 6, 5, 9, 0));
+        s1.setDuration(Duration.ofMinutes(60));
+        manager.createSubtask(s1);
+
+        Subtask s2 = new Subtask("Подзадача 2", "Вторая", Status.NEW, epic.getId());
+        s2.setStartTime(LocalDateTime.of(2025, 6, 5, 11, 0));
+        s2.setDuration(Duration.ofMinutes(30));
+        manager.createSubtask(s2);
+
+        Epic resultEpic = manager.getEpicsById(epic.getId());
+
+        assertEquals(LocalDateTime.of(2025, 6, 5, 9, 0), resultEpic.getStartTime());
+        assertEquals(Duration.ofMinutes(90), resultEpic.getDuration());
+        assertEquals(LocalDateTime.of(2025, 6, 5, 11, 30), resultEpic.getEndTime());
+    }
+
+    @Test
+    void prioritizedTasksShouldBeOrderedByStartTimeOnly() {
+        Task task1 = new Task("Таска1", "Описание", Status.NEW);
+        task1.setStartTime(LocalDateTime.of(2025, 6, 5, 8, 0));
+        task1.setDuration(Duration.ofMinutes(30));
+        manager.createTask(task1);
+
+        Task task2 = new Task("Таска2", "Описание", Status.NEW); // без startTime — не попадет
+        manager.createTask(task2);
+
+        Epic epic = new Epic("Эпик", "Для подзадачи", Status.NEW);
+        manager.createEpic(epic);
+
+        Subtask subtask1 = new Subtask("Подзадача1", "Описание", Status.NEW, epic.getId());
+        subtask1.setStartTime(LocalDateTime.of(2025, 6, 5, 7, 0));
+        subtask1.setDuration(Duration.ofMinutes(15));
+        manager.createSubtask(subtask1);
+
+        List<Task> prioritized = manager.getPrioritizedTasks();
+
+        assertEquals(2, prioritized.size()); // только с startTime
+        assertEquals(subtask1.getId(), prioritized.get(0).getId());
+        assertEquals(task1.getId(), prioritized.get(1).getId());
+    }
+
+    @Test
+    void shouldThrowWhenAddingOverlappingTask() {
+        Task task1 = new Task("Таска1", "Описание1", Status.NEW);
+        task1.setStartTime(LocalDateTime.of(2025, 6, 5, 10, 0));
+        task1.setDuration(Duration.ofMinutes(60));
+        manager.addTask(task1); // этот метод использует проверку на пересечение
+
+        Task overlappingTask = new Task("Таска2", "Описание2", Status.NEW);
+        overlappingTask.setStartTime(LocalDateTime.of(2025, 6, 5, 10, 30)); // пересекается
+        overlappingTask.setDuration(Duration.ofMinutes(30));
+
+        assertThrows(IllegalArgumentException.class, () -> manager.addTask(overlappingTask));
+    }
+
+    @Test
+    void shouldThrowWhenUpdatingTaskWithTimeConflict() {
+        Task task1 = new Task("Таска1", "Описание1", Status.NEW);
+        task1.setStartTime(LocalDateTime.of(2025, 6, 5, 10, 0));
+        task1.setDuration(Duration.ofMinutes(60));
+        manager.createTask(task1);
+
+        Task task2 = new Task("Таска2", "Описание2", Status.NEW);
+        task2.setStartTime(LocalDateTime.of(2025, 6, 5, 12, 0));
+        task2.setDuration(Duration.ofMinutes(60));
+        manager.createTask(task2);
+
+        task2.setStartTime(LocalDateTime.of(2025, 6, 5, 10, 30)); // конфликт
+
+        assertThrows(IllegalArgumentException.class, () -> manager.updateTask(task2));
     }
 }
