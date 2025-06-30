@@ -62,10 +62,10 @@ class InMemoryTaskManagerTest {
 
     @Test
     void subtaskShouldLinkToEpicCorrectly() {
-        Epic epic = new Epic("Эпик 2", "Опис 2", Status.IN_PROGRESS);
+        Epic epic = new Epic("Эпик 2", "Опис 2",Status.IN_PROGRESS);
         manager.addEpic(epic);
 
-        Subtask subtask = new Subtask("Саба", "Опис", Status.NEW, epic.getId());
+        Subtask subtask = new Subtask("Саба", "Опис", Status.NEW,epic.getId());
         manager.addSubtask(subtask);
 
         Subtask result = manager.getSubtaskById(subtask.getId());
@@ -79,8 +79,8 @@ class InMemoryTaskManagerTest {
         Epic epic = new Epic("Эпик 3", "Опис 3", Status.IN_PROGRESS);
         manager.addEpic(epic);
 
-        Subtask sub1 = new Subtask("Саб о", "Опис о", Status.NEW, epic.getId());
-        Subtask sub2 = new Subtask("Саб е", "Опис е", Status.NEW, epic.getId());
+        Subtask sub1 = new Subtask("Саб о", "Опис о", Status.NEW,epic.getId());
+        Subtask sub2 = new Subtask("Саб е", "Опис е", Status.NEW,epic.getId());
         manager.addSubtask(sub1);
         manager.addSubtask(sub2);
 
@@ -124,7 +124,7 @@ class InMemoryTaskManagerTest {
         Epic epic = new Epic("Праздник", "Организация дня", Status.NEW);
         manager.addEpic(epic);
 
-        Subtask subtask = new Subtask("Саб", "Опис", Status.NEW, epic.getId());
+        Subtask subtask = new Subtask("Саб", "Опис", Status.NEW,epic.getId());
         manager.addSubtask(subtask);
 
         manager.deleteEpicById(epic.getId());
@@ -239,7 +239,7 @@ class InMemoryTaskManagerTest {
     @Test
     void shouldCalculateEpicTimeBasedOnItsSubtasks() {
         Epic epic = new Epic("Эпик", "Тестовое время", Status.NEW);
-        manager.createEpic(epic);
+        manager.createEpic(epic);  // используем create
 
         Subtask s1 = new Subtask("Подзадача 1", "Первая", Status.NEW, epic.getId());
         s1.setStartTime(LocalDateTime.of(2025, 6, 5, 9, 0));
@@ -265,7 +265,7 @@ class InMemoryTaskManagerTest {
         task1.setDuration(Duration.ofMinutes(30));
         manager.createTask(task1);
 
-        Task task2 = new Task("Таска2", "Описание", Status.NEW);
+        Task task2 = new Task("Таска2", "Описание", Status.NEW); // без startTime — не попадет
         manager.createTask(task2);
 
         Epic epic = new Epic("Эпик", "Для подзадачи", Status.NEW);
@@ -278,7 +278,7 @@ class InMemoryTaskManagerTest {
 
         List<Task> prioritized = manager.getPrioritizedTasks();
 
-        assertEquals(2, prioritized.size());
+        assertEquals(2, prioritized.size()); // только с startTime
         assertEquals(subtask1.getId(), prioritized.get(0).getId());
         assertEquals(task1.getId(), prioritized.get(1).getId());
     }
@@ -288,7 +288,7 @@ class InMemoryTaskManagerTest {
         Task task1 = new Task("Таска1", "Описание1", Status.NEW);
         task1.setStartTime(LocalDateTime.of(2025, 6, 5, 10, 0));
         task1.setDuration(Duration.ofMinutes(60));
-        manager.addTask(task1);
+        manager.addTask(task1); // этот метод использует проверку на пересечение
 
         Task overlappingTask = new Task("Таска2", "Описание2", Status.NEW);
         overlappingTask.setStartTime(LocalDateTime.of(2025, 6, 5, 10, 30)); // пересекается

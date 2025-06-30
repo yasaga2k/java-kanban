@@ -15,7 +15,7 @@ public class InMemoryTaskManager implements TaskManager { // Реализуем 
     protected final Map<Integer, Subtask> subtasks = new HashMap<>();
 
     protected final Set<Task> prioritizedTasks = new TreeSet<>(
-            Comparator.comparing(Task::getStartTime, Comparator.nullsLast(Comparator.naturalOrder()))
+            Comparator.comparing(Task::getStartTime)
                     .thenComparing(Task::getId)
     );
 
@@ -41,7 +41,6 @@ public class InMemoryTaskManager implements TaskManager { // Реализуем 
                     return newStart.isBefore(existEnd) && newEnd.isAfter(existStart);
                 });
     }
-
 
     private int newId() {
         return ++numberId;
