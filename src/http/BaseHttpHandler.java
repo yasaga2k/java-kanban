@@ -62,6 +62,7 @@ public abstract class BaseHttpHandler implements HttpHandler {
 
     protected void sendResponse(HttpExchange exchange, String response, int statusCode) throws IOException {
         byte[] bytes = response.getBytes(StandardCharsets.UTF_8);
+        exchange.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
         exchange.sendResponseHeaders(statusCode, bytes.length);
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(bytes);
