@@ -1,5 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import manager.HistoryManager;
+import manager.Managers;
 import model.Status;
 import model.Task;
 import org.junit.jupiter.api.*;
