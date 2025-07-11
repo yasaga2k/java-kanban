@@ -1,5 +1,6 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import manager.InMemoryHistoryManager;
 import model.Status;
 import model.Task;
 import org.junit.jupiter.api.*;

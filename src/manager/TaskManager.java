@@ -1,10 +1,12 @@
+package manager;
+
 import model.Epic;
 import model.Subtask;
 import model.Task;
 
 import java.util.List;
 
-interface TaskManager {
+public interface TaskManager {
 
     // Методы ТАСКА
     void addTask(Task task);
